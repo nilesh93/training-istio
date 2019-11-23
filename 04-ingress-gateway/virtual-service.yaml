@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nginx-gateway
+  namespace: training
+spec:
+  hosts: # incoming hosts which this should be applied to this service
+  - nginx.example.com
+  - nginx-test.training.svc.cluster.local
+  gateways:
+  - nginx-gateway
+  http:
+  - route:
+    - destination:
+        host: nginx-test.training.svc.cluster.local # host of the destination rule, should be same as service name
+        subset: v1 
+      weight: 50   
+    - destination:
+        host: nginx-test.training.svc.cluster.local # host of the destination rule, should be same as service name
+        subset: v2 
+      weight: 50 

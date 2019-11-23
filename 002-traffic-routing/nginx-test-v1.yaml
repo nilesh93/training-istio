@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx-test-svc1
+    version: v1
+  name: nginx-test-svc1
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      run: nginx-test-svc1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      annotations: 
+        # readiness.status.sidecar.istio.io/applicationPorts: ""  # If you haven't setup a readiness probe
+      labels:
+        run: nginx-test-svc1
+        app: nginx-test-svc
+        version: v1
+    spec:
+      containers:
+      - image: nj93/istio-test-svc:v1
+        name: nginx-test-svc1
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+        resources: {}
+status: {}

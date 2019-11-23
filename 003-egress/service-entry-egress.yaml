@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: httpbin-egress-rule
+spec:
+  hosts:
+  - httpbin.org
+  ports:
+    - name: http-443
+      number: 443
+      protocol: https
+  resolution: DNS
+  location: MESH_EXTERNAL

@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+    name: nginx-test
+spec:
+  host: nginx-test.training.svc.cluster.local
+  subsets: ## Pod labels. We group them here
+  - labels:
+      version: v1
+    name: v1
+  - labels:
+      version: v2
+    name: v2
+    trafficPolicy:
+      connectionPool:
+        http: {}
+        tcp: {}
+      outlierDetection:
+        baseEjectionTime: 15.000s
+        consecutiveErrors: 1
+        interval: 5.000s
+        maxEjectionPercent: 100
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM

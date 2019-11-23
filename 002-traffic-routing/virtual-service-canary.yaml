@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nginx-test
+spec:
+  hosts: # incoming hosts which this should be applied to this service
+  - nginx-test.training.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: nginx-test.training.svc.cluster.local # host of the destination rule, should be same as service name
+        subset: v1 # name of destination subset
+      weight: 50  # changing the weights, you can do canary releases. 90-10 --> 50 50 --> 100
+    - destination:
+        host: nginx-test.training.svc.cluster.local # host of the destination rule, should be same as service name
+        subset: v2 # name of destination subset
+      weight: 50  # changing the weights, you can do canary releases. 90-10 --> 50 50 --> 100
